@@ -1,55 +1,109 @@
-# KALI LINUX BASE IMAGE:LATEST
+# KALI LINUX AS BASE IMAGE
 FROM kalilinux/kali-rolling:latest
 
-# MAINTAINER: DZASTERABZ
-LABEL maintainer="abhiramonmail@gmail.com"
+# DOCKERFILE OWNER-MAINTAINER
+LABEL maintainer="DzasterAbz"
 
-# JUMP TO
+# DEFAULT ENVIRONMENT
 ENV HOME /root
 
-# BASH RESPONSE
-ENV DEBIAN_FRONTEND=noninteractive
+# GET NON-INTERACTIVE SHELL
+ENV DEBIAN_FRONTEND = noninteractive
 
-# PRESENT WORKING DIRECTORY
-WORKDIR /root
+# CONTAINER LABEL
+CMD ["echo", "Welcome to DzasterAbz WAPT & BugBounty Toolkit - Version 1.0"]
+CMD ["echo", "============================================================"]
+CMD ["echo", "Inspired by Hackersploit - AlexisAhmed"]
 
-# ALL CONFIGURATIONS
-RUN apt-get clean && \
-    apt-get autoclean && \
-    apt-get autoremove
-RUN mkdir ${HOME}/Toolkit && \
-    mkdir ${HOME}/Wordlist
-RUN apt-get -y update && \
-    apt-get -y full-upgrade && \
+# CREATING DIRECTORIES
+RUN mkdir ${HOME}/Tools && \
+    mkdir ${HOME}/Wordlists && \
+    mkdir ${HOME}/Bookmarks-Cheatsheets && \
+    mkdir ${HOME}/Tips-Methodologies && \
+    mkdir ${HOME}/WorkingDirectory
+
+# DEFAULT WORKING LOCATION
+WORKDIR ${HOME}/WorkingDirectory
+
+# OPEN PORTS
+EXPOSE 80/tcp 443/tcp
+
+# TIMEZONE DATA
+RUN ln -fs /usr/share/zoneinfo/Asia/Calcutta /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+# WORDLISTS
+RUN apt-get -y install seclists \
+    jq
+
+# BASIC TOOLS
+RUN apt-get update && \
+    apt-get upgrade && \
+    apt-get full-upgrade && \
     apt-get install -y --no-install-recommends \
-    build-essential \
+    build-essentials \
     tmux \
     gcc \
-    pluma \
-    nano \
+    iputils \
+    dnsutils \
+    net-tools \
     git \
+    nano \
+    gdb \
     wget \
-    python3 \
-    python3-pip \
-    python \
-    python-pip \
+    vim \
     curl \
+    awscli \
+    tzdata \
     make \
     man-db \
-    net-tools \
-    tzdata \
-    nmap \
-    whois \
-    nikto \
+    python \
+    python3 \
+    python-pip \
+    python3-pip \
     perl \
-    dnsutils \
-    dirb \
-    exploitdb \
-    wpscan \
-    uniscan \
+    nasm \
+    openssl \
+    snapd \
+    zsh \
+    openjdk-8-jre \
+    ruby \
+    postgresql \
+    && rm -rf /var/lib/apt/lists/*
 
 # PYTHON CONFIGURATION
 RUN python -m pip install --upgrade setuptools && python3 -m pip install --upgrade setuptools && python3 -m pip install --upgrade setuptools
+
+# MAIN TOOLS
+RUN apt-get install nmap \
+    whois \
+    nikto \
+    dirb \
+    sublist3r \
+    zaproxy \
+    whatweb \
+    dirbuster \
+    sqlmap \
+    wpscan \
+    uniscan \
+    exploitdb \
+    exploitdb-bin-sploits \
+    exploitdb-papers \
+    gobuster \
+    hashcat \
+    sslscan \
+    hydra \
+    w3af-console \
+    wireshark \
+    tcpdump \
+    tshark \
+    arachni \
+    websploit \
+    theharvester \
+    routersploit \
+    snort \
+    masscan \
+    metasploit-framework
 
 # METASPLOIT WITH DEPENDENCIES
 RUN add-apt-repository -y ppa:webupd8team/java && \
@@ -85,167 +139,186 @@ RUN add-apt-repository -y ppa:webupd8team/java && \
     gnupg2 \ 
     dirmngr
 
-RUN cd /opt && \
-    sudo git clone https://github.com/rapid7/metasploit-framework.git && \
-    sudo chown -R 'whoami' /opt/metasploit-framework && \
-    cd metasploit-framework && \
-    sudo bash -c 'for MSF in $(ls msf*); do ln -s /opt/metasploit-framework/$MSF /usr/local/bin/$MSF;done'
+# INSTALLING DEPENDENCIES (Cloned from AlexisAhmed)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    # SQLMAP
+    sqlmap \
+    # DIRB
+    dirb \
+    # DNSENUM
+    cpanminus \
+    # WFUZZ
+    python-pycurl \
+    # KNOCK
+    python-dnspython \
+    # MASSDNS
+    libldns-dev \
+    # WPSCAN
+    libcurl4-openssl-dev \
+    libxml2 \
+    libxml2-dev \
+    libxslt1-dev \
+    ruby-dev \
+    libgmp-dev \
+    zlib1g-dev \
+    # MASSCAN
+    libpcap-dev \
+    # THEHARVEST
+    python3.7 \
+    # JOOMSCAN
+    libwww-perl \
+    # HYDRA
+    hydra \
+    # DNSRECON
+    dnsrecon \
+    # ZSH
+    powerline\
+    # ZSH
+    fonts-powerline\
+    && rm -rf /var/lib/apt/lists/*
 
-RUN echo "export PATH=$PATH:/usr/lib/postgresql/10/bin" >> ~/.bashrc && \
-    . ~/.bashrc && \
-    usermod -a -G postgres whoami && \
-    su - 'whoami' && \
-    cd /opt/metasploit-framework/ && \
-    ./msfdb init
+# # INSTASAVE
+# RUN git clone https://github.com/sameera-madushan/InstaSave.git && \
+#     cd InstaSave && \
+#     pip3 install -r requirements.txt
 
-# TIMEZONE DATA
-RUN ln -fs /usr/share/zoneinfo/Asia/Calcutta /etc/localtime && \
-    dpkg-reconfigure --frontend noninteractive tzdata
-    
-# SEARCHSPLOIT-EXPLOITDB
-RUN apt-get -y install exploitdb-bin-sploits \ 
-    exploitdb-papers
+# # FINAL RECON
+# RUN git clone https://github.com/thewhiteh4t/FinalRecon.git && \
+#     cd FinalRecon && \
+#     pip3 install -r requirements.txt
 
-# INSTASAVE
-RUN git clone https://github.com/sameera-madushan/InstaSave.git && \
-    cd InstaSave && \
-    pip3 install -r requirements.txt
+# # OWASP MARYAM
+# RUN git clone https://github.com/saeeddhqan/Maryam.git && \
+#     cd Maryam && \
+#     pip install -r requirements.txt && \
+#     chmod +x maryam
 
-# FINAL RECON
-RUN git clone https://github.com/thewhiteh4t/FinalRecon.git && \
-    cd FinalRecon && \
-    pip3 install -r requirements.txt
+# # WEBKILLER
+# RUN git clone https://github.com/ultrasecurity/webkiller.git && \
+#     cd webkiller && \
+#     pip3 install -r requirements.txt && \
+#     chmod +x webkiller.py
 
-# OWASP MARYAM
-RUN git clone https://github.com/saeeddhqan/Maryam.git && \
-    cd Maryam && \
-    pip install -r requirements.txt && \
-    chmod +x maryam
+# # PULSAR
+# RUN git clone https://github.com/pulsar && \
+#     cd pulsar && \
+#     chmod +x install.sh && \
+#     ./install.sh
 
-# WEBKILLER
-RUN git clone https://github.com/ultrasecurity/webkiller.git && \
-    cd webkiller && \
-    pip3 install -r requirements.txt && \
-    chmod +x webkiller.py
+# # XSSER
+# RUN apt-get -y install python3-pycurl \
+#     python3-bs4 \
+#     python3-geoip \
+#     python3-geoip2 \
+#     python3-gi \
+#     python3-cairocffi \
+#     python3-selenium \
+#     firefoxdriver \
+#     xsser
 
-# PULSAR
-RUN git clone https://github.com/pulsar && \
-    cd pulsar && \
-    chmod +x install.sh && \
-    ./install.sh
+# # XSPEAR
+# RUN gem install XSpear && \
+#     gem install colorize && \
+#     gem install selenium-webdriver && \
+#     gem install terminal-table && \
+#     gem install progress_bar
 
-# SECLIST
-RUN apt-get -y install seclists
+# # XXSTRIKE
+# RUN git clone https://github.com/s0md3v/XSStrike && \
+#     pip3 install fuzzywuzzy && \
+#     pip3 install python-levenshtein && \
+#     pip3 install prettytable && \
+#     pip3 install requests
 
-# XSSER
-RUN apt-get -y install python3-pycurl \
-    python3-bs4 \
-    python3-geoip \
-    python3-geoip2 \
-    python3-gi \
-    python3-cairocffi \
-    python3-selenium \
-    firefoxdriver
+# # ZAPCLI
+# RUN pip install --upgrade zapcli
 
-# XSPEAR
-RUN gem install XSpear && \
-    gem install colorize && \
-    gem install selenium-webdriver && \
-    gem install terminal-table && \
-    gem install progress_bar
+# # RAPIDSCAN
+# RUN wget -O rapidscan.py https://raw.githubusercontent.com/skavngr/rapidscan/master/rapidscan.py && chmod +x rapidscan.py
 
-# XXSTRIKE
-RUN git clone https://github.com/s0md3v/XSStrike && \
-    pip3 install fuzzywuzzy && \
-    pip3 install python-levenshtein && \
-    pip3 install prettytable && \
-    pip3 install requests
+# # STRIKER
+# RUN git clone https://github.com/s0md3v/Striker.git
 
-# ZAP CLI
-RUN pip install --upgrade zapcli
+# # WPSCAN
+# RUN git clone https://github.com/wpscanteam/wpscan && \
+#     cd wpscan/ && \
+#     bundle install && make install
 
-# RAPIDSCAN
-RUN wget -O rapidscan.py https://raw.githubusercontent.com/skavngr/rapidscan/master/rapidscan.py && chmod +x rapidscan.py
+# # TESTSSL
+# RUN git clone https://github.com/s0md3v/Striker.git
 
-# STRIKER
-RUN git clone https://github.com/s0md3v/Striker.git
+# # A2SV
+# RUN git clone https://github.com/hahwul/a2sv.git && \
+#     cd a2sc && \
+#     pip install argparse && \
+#     pip install netaddr && \
+#     apt-get install openssl
 
-# WPSCAN
-RUN git clone https://github.com/wpscanteam/wpscan && \
-    cd wpscan/ && \
-    bundle install && make install
+# # SQLMAP
+# RUN git clone https://github.com/sqlmapproject/sqlmap.git sqlmap-dev
 
-# TESTSSL
-RUN git clone https://github.com/s0md3v/Striker.git
+# # S3SCACNNER
+# RUN git clone https://github.com/sa7mon/S3Scanner.git
 
-# A2SV
-RUN git clone https://github.com/hahwul/a2sv.git && \
-    cd a2sc && \
-    pip install argparse && \
-    pip install netaddr && \
-    apt-get install openssl
+# # NOSQL
+# RUN git clone https://github.com/codingo/NoSQLMap.git && \
+#     python setup.py install
 
-# SQLMAP
-RUN git clone https://github.com/sqlmapproject/sqlmap.git sqlmap-dev
+# # WFUZZ
+# RUN pip install wfuzz
 
-# S3SCACNNER
-RUN git clone https://github.com/sa7mon/S3Scanner.git
+# # CORSY
+# RUN git clone https://github.com/s0md3v/Corsy.git && \
+#     pip3 install tld && \
+#     pip3 install requests
 
-# NOSQL
-RUN git clone https://github.com/codingo/NoSQLMap.git && \
-    python setup.py install
+# # SILVER
+# RUN git clone https://github.com/s0md3v/Silver && \
+#     pip3 install -r requirements.txt
 
-# WFUZZ
-RUN pip install wfuzz
+# # MASSCAN
+# RUN sudo apt-get -y install git \
+#     gcc \
+#     make \
+#     libcap-dev && \
+#     git clone https://github.com/robertdavidgraham/masscan && \
+#     cd masscan && \
+#     make
 
-# CORSY
-RUN git clone https://github.com/s0md3v/Corsy.git && \
-    pip3 install tld && \
-    pip3 install requests
+# # GITROB
+# RUN go get github.com/michenriksen/gitrob
 
-# SILVER
-RUN git clone https://github.com/s0md3v/Silver && \
-    pip3 install -r requirements.txt
+# # GITMINER
+# RUN git clone http://github.com/UnkL4b/GitMiner && \
+#     cd GitMiner && \
+#     pip3 install -r requirements.txt
 
-# MASSCAN
-RUN sudo apt-get -y install git \
-    gcc \
-    make \
-    libcap-dev && \
-    git clone https://github.com/robertdavidgraham/masscan && \
-    cd masscan && \
-    make
+# # GOBUSTER
+# RUN go get github.com/OJ/gobuster
 
-# GITROB
-RUN go get github.com/michenriksen/gitrob
-
-# GITMINER
-RUN git clone http://github.com/UnkL4b/GitMiner && \
-    cd GitMiner && \
-    pip3 install -r requirements.txt
-
-# GOBUSTER
-RUN go get github.com/OJ/gobuster
-
-# DIRSEARCH
-RUN git clone https://github.com/maurosoria/dirsearch.git && \
-    cd dirsearch && \
+# # DIRSEARCH
+# RUN git clone https://github.com/maurosoria/dirsearch.git
    
-# PARAMSPIDER
-RUN git clone https://github.com/devanshbatham/ParamSpider && \
-    cd ParamSpider && \
-    pip3 install -r requirements.txt
+# # PARAMSPIDER
+# RUN git clone https://github.com/devanshbatham/ParamSpider && \
+#     cd ParamSpider && \
+#     pip3 install -r requirements.txt
 
-# KNOCKPY
-RUN apt-get install python-dnspython && \
-    git clone https://github.com/guelfoweb/knock.git
+# # KNOCKPY
+# RUN apt-get install python-dnspython && \
+#     git clone https://github.com/guelfoweb/knock.git
 
-# SUBLIST3R
-RUN git clone https://github.com/aboul3la/Sublist3r.git && \
-    pip install -r requirements.txt
+# # SUBLIST3R
+# RUN git clone https://github.com/aboul3la/Sublist3r.git && \
+#     pip install -r requirements.txt
 
-# PHOTON
-RUN git clone https://github.com/s0md3v/Photon.git
+# # PHOTON
+# RUN cd ${HOME}/Toolkit && \
+#     git clone https://github.com/s0md3v/Photon.git && \
+#     cd Photon && \
+#     chmod +x photon.py && \
+#     ln -sf ${HOME}/toolkit/teh_s3_bucketeers/bucketeer.sh /usr/local/bin/bucketeer
 
 # AMASS
 RUN snap install amass
@@ -253,5 +326,13 @@ RUN snap install amass
 # ALTDNS
 RUN pip install py-altdns
 
-# ASSETFINDER
-RUN go get -u github.com/tomnomnom/assetfinder
+# # VULNERABLE SITES FOR TESTING & LEARNING
+# RUN docker pull vulnerables/web-dvwa # docker run -p 80:80 vulnerables/web-dvwa
+# RUN docker pull szsecurity/mutillidae  # docker run -p 1337:80 szsecurity/mutlilidae
+# RUN docker pull szsecurity/webgoat # docker run -p 1337:80 szsecurity/webgoat
+# RUN docker pull raesene/bwapp
+
+# Git Repository for PentestLab Management
+RUN git clone https://github.com/eystsen/pentestlab.git
+
+
