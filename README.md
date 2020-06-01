@@ -1,2 +1,2 @@
-# DZ-Toolkit
-### Custom Developed WEBPENTESTING & BUGBOUNTY TOOLKIT
+# DZ-Docker-Toolkit
+### Comprehensive Web Application Penetration Testing & Bug Bounty Docker Toolkit
