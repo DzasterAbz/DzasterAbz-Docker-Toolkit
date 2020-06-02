@@ -8,7 +8,7 @@ LABEL maintainer="DzasterAbz"
 ENV HOME /root
 
 # GET NON-INTERACTIVE SHELL
-ENV DEBIAN_FRONTEND = noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # CONTAINER LABEL
 CMD ["echo", "Welcome to DzasterAbz WAPT & BugBounty Toolkit - Version 1.0"]
@@ -28,23 +28,23 @@ WORKDIR ${HOME}/WorkingDirectory
 # OPEN PORTS
 EXPOSE 80/tcp 443/tcp
 
-# TIMEZONE DATA
-RUN ln -fs /usr/share/zoneinfo/Asia/Calcutta /etc/localtime && \
-    dpkg-reconfigure --frontend noninteractive tzdata
+# # TIMEZONE DATA
+# RUN ln -fs /usr/share/zoneinfo/Asia/Calcutta /etc/localtime && \
+#     dpkg-reconfigure --frontend noninteractive tzdata
 
-# WORDLISTS
-RUN apt-get -y install seclists \
-    jq
+# # WORDLISTS
+# RUN apt-get -y install seclists \
+#     jq
 
 # BASIC TOOLS
-RUN apt-get update && \
-    apt-get upgrade && \
-    apt-get full-upgrade && \
+RUN apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y full-upgrade && \
     apt-get install -y --no-install-recommends \
-    build-essentials \
+    build-essential \
     tmux \
     gcc \
-    iputils \
+    iputils* \
     dnsutils \
     net-tools \
     git \
@@ -74,8 +74,14 @@ RUN apt-get update && \
 # PYTHON CONFIGURATION
 RUN python -m pip install --upgrade setuptools && python3 -m pip install --upgrade setuptools && python3 -m pip install --upgrade setuptools
 
+# ADDITIONAL DOCKER ISSUES
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
+    apt-get install -y -q && \
+    apt-get install -y  apt
+
 # MAIN TOOLS
-RUN apt-get install nmap \
+RUN apt-get update && apt-get full-upgrade && apt-get install -y --no-install-recommends \
+    nmap \
     whois \
     nikto \
     dirb \
@@ -93,7 +99,6 @@ RUN apt-get install nmap \
     hashcat \
     sslscan \
     hydra \
-    w3af-console \
     wireshark \
     tcpdump \
     tshark \
@@ -101,15 +106,11 @@ RUN apt-get install nmap \
     websploit \
     theharvester \
     routersploit \
-    snort \
     masscan \
     metasploit-framework
 
 # METASPLOIT WITH DEPENDENCIES
-RUN add-apt-repository -y ppa:webupd8team/java && \
-    apt-get -y update && \
-    apt-get -y install oracle-java8-installer && \
-    apt-get -y update && \
+RUN apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y install build-essential \
     libreadline-dev \
@@ -122,7 +123,6 @@ RUN add-apt-repository -y ppa:webupd8team/java && \
     git-core \
     autoconf \
     postgresql \
-    pgadmin3 \
     curl \
     zlib1g-dev \
     libxml2-dev \
@@ -148,10 +148,6 @@ RUN apt-get update && \
     dirb \
     # DNSENUM
     cpanminus \
-    # WFUZZ
-    python-pycurl \
-    # KNOCK
-    python-dnspython \
     # MASSDNS
     libldns-dev \
     # WPSCAN
@@ -320,8 +316,8 @@ RUN apt-get update && \
 #     chmod +x photon.py && \
 #     ln -sf ${HOME}/toolkit/teh_s3_bucketeers/bucketeer.sh /usr/local/bin/bucketeer
 
-# AMASS
-RUN snap install amass
+## AMASS
+#RUN snap install amass
 
 # ALTDNS
 RUN pip install py-altdns
