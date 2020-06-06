@@ -4,18 +4,17 @@
 #### ISSUES INFO
 #####  No. Of Issues: 12
 
-- Tool to Collect/Scrap Information from Various Websites
-- Build a Custom Browser with Required Plugins
-- GUI Support
-- Scheduled Update of Docker Images & Tools
-- Tool to List Tools
-- Add Data to Specific Repositories
-- Major Tools Not Added
-- Cleaning the Docker File before Publishing
-- Python Library Issues
-- Java Installation Issue
-- apt-utils Issue
-- Seclists & CommonSpeaks Not Added
+1. Add Major Tools
+2. Seclists & CommonSpeaks
+3. 'apt-utils' issue
+4. Java Installation & Python Library Issue
+5. Organizing Content to Specific Local Repositories
+6. Cleaning the Docker Image
+7. GUI Support
+8. Tools Lister
+9. Scheduled Updates for Tools & Docker Image (CRONJOB)
+10. Browser Support with Required Default Plugins
+11. Scrap Wen-Tools Information
 
 ##### ToDo
-- Priotize Issues
+- [X] Priotize Issues
