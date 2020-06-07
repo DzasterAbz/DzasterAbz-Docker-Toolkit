@@ -10,7 +10,7 @@
 4. Java Installation & Python Library Issue
 5. Organizing Content to Specific Local Repositories
 6. Cleaning the Docker Image
-7. GUI Support
+7. GUI Support (Separate Image Built Required - Multi Imaging Docker Needed)
 8. Tools Lister
 9. Scheduled Updates for Tools & Docker Image (CRONJOB)
 10. Browser Support with Required Default Plugins
