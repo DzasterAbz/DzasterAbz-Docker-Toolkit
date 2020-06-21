@@ -1,6 +1,6 @@
 # DzasterAbz-Docker-Toolkit (dzastertoolkit)
 ## Version 1.0
---- 
+
 ### Web Application Penetration Testing & Bug Bounty Dockerkit
 
 #### ISSUES INFO
@@ -10,8 +10,8 @@
 2. Seclists & CommonSpeaks  
 3. ~'apt-utils' issue~  
 4. Java Installation & ~Python Library Issue~  
-5. Organizing Content to Specific Local Repositories~ (Moved to README)  
-6. ~Cleaning the Docker Image~   
+5. Organizing Content to Specific Local Repositories (Moved to README)  
+6. Cleaning the Docker Image   
 7. GUI Support (Separate Image Built Required - Multi Imaging Docker Needed)  
 8. Tools Lister    
 9. Scheduled Updates for Tools & Docker Image (CRONJOB)  
